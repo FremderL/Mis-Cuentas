@@ -3,6 +3,14 @@
 **Fecha:** 2026-09-20 · **Alcance:** todas las funciones de las Partes 1–9 + Dinero Oculto.
 **Entorno de pruebas:** vista previa local (`server.py`, puerto 8000), Chrome/Firefox y móvil (responsive).
 
+### Persistencia y modo sin conexión (antes de subir y después)
+- [ ] Registrar un movimiento y **recargar la página**: el movimiento y el balance siguen ahí.
+- [ ] Con la app ya publicada (HTTPS), en el teléfono aparece el botón **Instalar** (icono de teléfono) en la barra superior: en Android un toque la instala; en iPhone muestra los pasos de «Agregar a pantalla de inicio». Una vez instalada, el botón desaparece.
+- [ ] Cerrar la pestaña y volver a abrir la app (mismo navegador y URL): los datos persisten.
+- [ ] Activar el modo avión (sin conexión) y recargar: la app abre y muestra los datos.
+- [ ] En DevTools → Application → Storage: figura `misCuentas.v1` **y** `misCuentas.v1.backup`.
+- [ ] (Opcional) "Agregar a pantalla de inicio" instala la app con su icono verde.
+
 ## 1. Pruebas automatizadas (ejecutadas en cada incremento)
 
 | Prueba | Resultado |
