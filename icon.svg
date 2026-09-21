@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12a37f"/>
+      <stop offset="1" stop-color="#0a5c47"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#g)"/>
+  <!-- libro / cartera -->
+  <rect x="24" y="36" width="80" height="58" rx="10" fill="#ffffff" opacity="0.16"/>
+  <rect x="24" y="36" width="80" height="58" rx="10" fill="none" stroke="#ffffff" stroke-width="5"/>
+  <!-- solapa con moneda -->
+  <rect x="24" y="50" width="52" height="20" rx="9" fill="#ffffff"/>
+  <circle cx="41" cy="60" r="11" fill="#ffd166"/>
+  <text x="41" y="65" text-anchor="middle" font-size="15" font-weight="bold" font-family="system-ui,sans-serif" fill="#0a5c47">$</text>
+  <!-- flecha de ingreso -->
+  <path d="M88 74 L100 74 M94 68 L100 74 L94 80" stroke="#ffd166" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
