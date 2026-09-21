@@ -13,9 +13,20 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        '.webmanifest': 'application/manifest+json',
+        '.js': 'text/javascript',
+        '.mjs': 'text/javascript',
+        '.json': 'application/json',
+        '.svg': 'image/svg+xml',
+    }
+
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store, must-revalidate')
         self.send_header('Expires', '0')
+        # Permite registrar el service worker y el manifest sin restricciones
+        self.send_header('Service-Worker-Allowed', '/')
         super().end_headers()
 
     def log_message(self, fmt, *args):  # consola limpia

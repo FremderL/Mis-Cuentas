@@ -74,7 +74,6 @@ function normalizeState(s) {
   return s;
 }
 
-let state = load();
 let editingId = null;
 
 const filters = {
@@ -113,28 +112,49 @@ const storage = (() => {
   }
 })();
 
+const LS_BACKUP = LS_KEY + '.backup';
+
+function parseSaved(raw) {
+  if (!raw) return null;
+  const data = JSON.parse(raw); // lanza si está corrupto
+  const base = freshState();
+  return normalizeState({
+    transactions: Array.isArray(data.transactions) ? data.transactions : [],
+    categories: Array.isArray(data.categories) && data.categories.length ? data.categories : base.categories,
+    accounts: Array.isArray(data.accounts) && data.accounts.length ? data.accounts : base.accounts,
+    templates: Array.isArray(data.templates) ? data.templates : [],
+    goals: Array.isArray(data.goals) ? data.goals : [],
+    settings: { ...base.settings, ...(data.settings || {}) },
+  });
+}
+
 function load() {
+  // 1) Copia principal
   try {
-    const raw = storage.get(LS_KEY);
-    if (!raw) return freshState();
-    const data = JSON.parse(raw);
-    const base = freshState();
-    return normalizeState({
-      transactions: Array.isArray(data.transactions) ? data.transactions : [],
-      categories: Array.isArray(data.categories) && data.categories.length ? data.categories : base.categories,
-      accounts: Array.isArray(data.accounts) && data.accounts.length ? data.accounts : base.accounts,
-      templates: Array.isArray(data.templates) ? data.templates : [],
-      goals: Array.isArray(data.goals) ? data.goals : [],
-      settings: { ...base.settings, ...(data.settings || {}) },
-    });
-  } catch {
-    return freshState();
+    const st = parseSaved(storage.get(LS_KEY));
+    if (st) return st;
+  } catch (err) {
+    console.error('Datos principales ilegibles:', err);
   }
+  // 2) Respaldo automático (último guardado correcto)
+  try {
+    const st = parseSaved(storage.get(LS_BACKUP));
+    if (st) {
+      storage.set(LS_KEY, storage.get(LS_BACKUP)); // restaura la principal
+      setTimeout(() => toast('Se recuperó un respaldo automático de tus datos'), 900);
+      return st;
+    }
+  } catch (err) {
+    console.error('Respaldo ilegible:', err);
+  }
+  return freshState();
 }
 
 function save() {
   try {
-    storage.set(LS_KEY, JSON.stringify(state));
+    const payload = JSON.stringify(state);
+    storage.set(LS_KEY, payload);
+    storage.set(LS_BACKUP, payload); // respaldo del último guardado correcto
     return true;
   } catch (err) {
     console.error('No se pudo guardar:', err);
@@ -142,6 +162,11 @@ function save() {
     return false;
   }
 }
+
+/* Estado cargado DESPUÉS de definir storage/save:
+   si se carga antes, `storage` aún no existe y load() caería
+   silenciosamente a un estado vacío en cada recarga. */
+let state = load();
 
 /* ---------- Utilidades ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -2022,6 +2047,60 @@ $('#btn-demo-2').addEventListener('click', () => { loadDemo(); });
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+/* ---------- Instalación como app (PWA) ---------- */
+let installPrompt = null;
+const btnInstall = $('#btn-install');
+
+function runningAsApp() {
+  return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+}
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+if (!runningAsApp() && isIOS()) {
+  btnInstall.hidden = false; // iOS no dispara beforeinstallprompt: muestra instrucciones
+}
+
+// Android/Chrome/Edge: el navegador avisa cuando la app es instalable
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  installPrompt = e;
+  btnInstall.hidden = false;
+});
+
+btnInstall.addEventListener('click', async () => {
+  if (installPrompt) {
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice.catch(() => ({ outcome: 'dismissed' }));
+    if (outcome === 'accepted') {
+      btnInstall.hidden = true;
+      toast('Instalando Mis Cuentas…');
+    }
+    installPrompt = null;
+  } else {
+    $('#modal-install').showModal(); // iOS o instalación manual
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  btnInstall.hidden = true;
+  installPrompt = null;
+  toast('App instalada');
+});
+
+/* Guardado extra al cerrar/recargar o al mandar la app al fondo
+   (cubre navegadores móviles que pueden interrumpir en cualquier punto). */
+function flushSave() {
+  try {
+    storage.set(LS_KEY, JSON.stringify(state));
+  } catch { /* sin almacenamiento disponible */ }
+}
+window.addEventListener('pagehide', flushSave);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushSave();
+});
 
 /* ---------- Inicio ---------- */
 (function init() {
