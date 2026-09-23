@@ -8,7 +8,7 @@
 const LS_KEY = 'misCuentas.v1';
 /* Versión de la app: se muestra en Configuración → Acerca de.
    Formato: MAYOR.MENOR.PARCHE.REVISIÓN (ej. 1.2.0.0) */
-const APP_VERSION = '1.14.0.0';
+const APP_VERSION = '1.14.0.2';
 
 const DEFAULT_CATEGORIES = [
   { id: 'c-comida',     name: 'Comida',      icon: '🍔', color: '#e07b39', type: 'expense' },
@@ -4102,7 +4102,19 @@ $('#btn-demo-2').addEventListener('click', () => { loadDemo(); });
 
 /* ---------- PWA ---------- */
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  /* 1.14.0.1 · hay que distinguir: si YA existía un controlador al
+     arrancar, el cambio significa una ACTUALIZACIÓN real (recargar para
+     no mezclar versiones); si no existía, es la primera instalación del
+     SW (no recargar, cortaría la interacción del usuario nuevo). */
+  const _hadSwController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.register('sw.js').catch(() => {});
+  let _swReload = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (_swReload || !_hadSwController) return;
+    _swReload = true;
+    try { toast('Nueva versión instalada · recargando…'); } catch {}
+    setTimeout(() => location.reload(), 600);
+  });
 }
 
 /* ---------- Instalación como app (PWA) ---------- */

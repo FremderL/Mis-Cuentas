@@ -6,7 +6,18 @@ La versión visible de la app vive en `app.js` → constante `APP_VERSION`
 
 ---
 
-## 1.14.0.0 — Actual (2026-09-22)
+## 1.14.0.2 — Actual (2026-09-22)
+**Corrección (móvil · responsivo)**
+- **Scroll horizontal en la portada de móvil**: la tira de barras del resumen anual exigía 520px de ancho mínimo y, sin `min-width:0` en los hijos de la cuadrícula, estiraba TODOS los paneles fuera de pantalla. Ahora la cuadrícula encoge correctamente y la tira anual se adapta al ancho (gap y etiquetas compactas en móvil).
+- **El botón ＋ era inalcanzable**: el panel desbordado lo cubría; tras el ajuste responde al toque en móvil (verificado con toques reales emulados).
+- Descripciones largas del libro ahora se recortan con puntos suspensivos en móvil (eran `inline` y no se truncaban, desbordando la fila).
+
+## 1.14.0.1 (2026-09-22)
+**Corrección (publicación)**
+- **Mezcla de versiones al actualizar**: el service worker servía `app.js`/`styles.css` con caché-primero, así que la primera apertura tras publicar podía combinar HTML nuevo con JS viejo y dejar los botones nuevos sin responder. Ahora los recursos esenciales van **red-primero ignorando la caché intermedia** (siempre consistentes; offline se usa la copia guardada).
+- **Recarga automática** al instalar una nueva versión del service worker: el cambio se aplica solo, sin hacer F5.
+
+## 1.14.0.0 (2026-09-22)
 **Personalizar portada**
 - Configuración → **Personalizar…**: muestra u **oculta cada panel** (registro rápido, flujo del mes, presupuestos, gastos por categoría, metas, préstamos, tu semana, comparativa y año) y **cámbialos de orden** con ‹ ›.
 - Ocultar no borra nada: los cálculos siguen corriendo; solo cambia la presentación.

@@ -1,6 +1,6 @@
 # ROADMAP — Próximas actualizaciones de Mis Cuentas
 
-Versión actual: **1.14.0.0** (ver `CHANGELOG.md` para el historial).
+Versión actual: **1.14.0.2** (ver `CHANGELOG.md` para el historial).
 
 Reglas de versionado: `MAYOR.MENOR.PARCHE.REVISIÓN`
 - **MAYOR**: cambios grandes de experiencia o estructura de datos.
