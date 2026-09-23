@@ -81,10 +81,20 @@
     <div class="acc-row" id="acc-row"></div>
   </section>
 
+  <!-- ============ REGISTRO RÁPIDO (widget destacado, 1.10.0.0) ============ -->
+  <section class="quick" id="quick-panel" data-panel="quick" aria-label="Registro rápido">
+    <div class="quick-head">
+      <h2>Registro rápido</h2>
+      <button class="btn btn-ghost btn-sm" id="quick-manage">Administrar</button>
+    </div>
+    <div class="quick-list" id="quick-list"></div>
+    <p class="quick-hint" id="quick-hint" hidden>Sin movimientos frecuentes todavía — <button class="link-btn" id="quick-create">crear el primero</button></p>
+  </section>
+
   <!-- ============ GRÁFICAS ============ -->
   <section class="panels">
 
-    <article class="panel panel-flow panel-wide">
+    <article class="panel panel-flow panel-wide" data-panel="flow">
       <h2>Flujo del mes <small id="flow-month" class="panel-sub"></small></h2>
       <div class="flow-wrap">
         <canvas id="chart-flow" width="200" height="200" aria-label="Anillo: porcentaje del ingreso mensual ya gastado"></canvas>
@@ -97,13 +107,13 @@
       <p id="flow-note" class="flow-note" hidden></p>
     </article>
 
-    <article class="panel panel-cb">
+    <article class="panel panel-cb" data-panel="budgets">
       <h2>Presupuestos por categoría <small class="panel-sub" id="budgets-month"></small></h2>
       <div id="budgets-list" class="cb-list"></div>
       <p id="budgets-empty" class="empty-note" hidden>Sin presupuestos definidos. Configúralos en Categorías (campo “Presup./mes”).</p>
     </article>
 
-    <article class="panel">
+    <article class="panel" data-panel="donut">
       <h2>Gastos por categoría <small class="panel-sub">(según filtros)</small></h2>
       <div class="donut-wrap">
         <canvas id="chart-donut" width="220" height="220" aria-label="Gráfica de gastos por categoría"></canvas>
@@ -112,13 +122,31 @@
       <p id="chart-empty" class="empty-note" hidden>Sin gastos en el período seleccionado.</p>
     </article>
 
-    <article class="panel panel-wide panel-goals">
+    <article class="panel panel-wide panel-goals" data-panel="goals">
       <h2>Metas de ahorro <button class="link-btn" id="goal-new">＋ Nueva meta</button></h2>
       <div id="goals-grid" class="goals-grid"></div>
       <p id="goals-empty" class="empty-note" hidden>Sin metas de ahorro todavía. Crea tu primera meta y ve tu progreso aquí.</p>
     </article>
 
-    <article class="panel panel-wide">
+    <article class="panel panel-wide panel-debts" data-panel="debts">
+      <h2>Préstamos y deudas <button class="link-btn" id="debt-new">＋ Nuevo registro</button></h2>
+      <div id="debts-summary" class="debts-summary">
+        <span class="debt-chip"><span class="dc-label">Me deben</span><b id="debts-me">$0.00</b></span>
+        <span class="debt-chip"><span class="dc-label">Debo</span><b id="debts-owe">$0.00</b></span>
+      </div>
+      <div id="debts-list" class="debts-list"></div>
+      <p id="debts-empty" class="empty-note" hidden>Sin préstamos registrados. Anota a quién le prestaste o a quién le debes; puedes ligar el dinero real a una cuenta si quieres.</p>
+      <button class="link-btn" id="debts-settled-toggle" hidden>Ver liquidados ▾</button>
+      <div id="debts-settled" class="debts-list" hidden></div>
+    </article>
+
+    <article class="panel panel-wide panel-week" id="panel-week" data-panel="week">
+      <h2>Tu semana <small class="panel-sub" id="week-range"></small></h2>
+      <div id="week-panel-body" class="week-body"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="week-review">Ver repaso de la semana pasada</button>
+    </article>
+
+    <article class="panel panel-wide" data-panel="months">
       <h2>Comparativa — últimos 6 meses</h2>
       <div id="chart-months" class="bars" aria-label="Comparativa mensual"></div>
       <div class="bars-legend">
@@ -126,16 +154,28 @@
         <span><i class="dot dot-out"></i> Gastos</span>
       </div>
     </article>
-  </section>
 
-  <!-- ============ REGISTRO RÁPIDO ============ -->
-  <section class="quick" id="quick-panel" aria-label="Registro rápido">
-    <div class="quick-head">
-      <h2>Registro rápido</h2>
-      <button class="btn btn-ghost btn-sm" id="quick-manage">Administrar</button>
-    </div>
-    <div class="quick-list" id="quick-list"></div>
-    <p class="quick-hint" id="quick-hint" hidden>Sin movimientos frecuentes todavía — <button class="link-btn" id="quick-create">crear el primero</button></p>
+    <article class="panel panel-wide panel-year" data-panel="year">
+      <h2>Resumen anual
+        <span class="year-nav">
+          <button id="year-prev" class="icon-btn btn-sm" aria-label="Año anterior">‹</button>
+          <strong id="year-title" class="year-title">—</strong>
+          <button id="year-next" class="icon-btn btn-sm" aria-label="Año siguiente">›</button>
+        </span>
+        <button class="link-btn" id="btn-year-csv">Exportar CSV del año</button>
+      </h2>
+      <div id="year-compare" class="year-compare"></div>
+      <div id="year-strip" class="year-strip">
+        <div id="year-bars" class="bars" aria-label="Ingresos y gastos mes a mes del año"></div>
+      </div>
+      <div class="bars-legend">
+        <span><i class="dot dot-in"></i> Ingresos</span>
+        <span><i class="dot dot-out"></i> Gastos</span>
+        <span><i class="dot dot-null"></i> Sin datos</span>
+      </div>
+      <div id="year-stats" class="year-stats"></div>
+      <p id="year-empty" class="empty-note" hidden>Sin movimientos registrados en este año.</p>
+    </article>
   </section>
 
   <!-- ============ FILTROS ============ -->
@@ -150,9 +190,17 @@
       <select id="f-category" aria-label="Categoría">
         <option value="all">Todas las categorías</option>
       </select>
+      <select id="f-tag" aria-label="Etiqueta">
+        <option value="all">Todas las etiquetas</option>
+      </select>
       <input type="month" id="f-month" aria-label="Mes">
+      <select id="f-saved" aria-label="Filtros guardados" title="Aplicar un filtro guardado">
+        <option value="">Guardados…</option>
+      </select>
+      <button id="f-save" class="btn btn-ghost" title="Guardar los filtros actuales con un nombre">☆ Guardar</button>
       <button id="f-clear" class="btn btn-ghost" title="Limpiar filtros">✕ Limpiar</button>
-      <button id="btn-export-csv" class="btn btn-ghost" title="Exportar movimientos filtrados a CSV">Exportar CSV</button>
+      <button id="btn-export-csv" class="btn btn-ghost" title="Exportar movimientos filtrados a Excel/CSV">Exportar CSV</button>
+      <button id="btn-import-csv" class="btn btn-ghost" title="Importar movimientos desde un archivo CSV">Importar CSV</button>
     </div>
     <button id="f-adv-toggle" class="link-btn adv-toggle" aria-expanded="false">
       Filtros avanzados <span id="f-adv-arrow">▾</span><span id="f-adv-badge" class="adv-badge" hidden>0</span>
@@ -173,6 +221,7 @@
         </label>
       </div>
       <p class="adv-note" id="adv-month-note" hidden>ⓘ El rango de fechas anula temporalmente el filtro de mes.</p>
+      <div id="tag-summary" class="tag-summary" hidden></div>
     </div>
   </section>
 
@@ -239,6 +288,7 @@
     <label class="field">
       <span>Monto <em class="req">*</em></span>
       <input type="number" id="tx-amount" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00" required>
+      <em class="fx-note" id="tx-amount-note" hidden></em>
     </label>
 
     <label class="field">
@@ -259,6 +309,11 @@
     <label class="field">
       <span>Descripción <em class="req">*</em></span>
       <input type="text" id="tx-desc" maxlength="120" placeholder="Ej. Supermercado de la semana" required>
+    </label>
+
+    <label class="field">
+      <span>Etiquetas <small>(opcional, separadas por coma)</small></span>
+      <input type="text" id="tx-tags" maxlength="80" placeholder="Ej. hogar, trabajo">
     </label>
 
     <footer class="modal-foot">
@@ -412,6 +467,15 @@
       <input type="text" id="acc-icon" class="cat-icon-input" maxlength="2" placeholder="🏦" title="Emoji">
       <input type="text" id="acc-name" maxlength="30" placeholder="Nombre de la cuenta" required>
       <input type="color" id="acc-color" value="#274f8f" title="Color">
+      <select id="acc-currency" title="Moneda de la cuenta" aria-label="Moneda de la cuenta">
+        <option value="MXN">MXN</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="COP">COP</option>
+        <option value="ARS">ARS</option>
+        <option value="CLP">CLP</option>
+        <option value="PEN">PEN</option>
+      </select>
       <button type="submit" id="acc-submit" class="btn btn-primary">Añadir</button>
       <button type="button" id="acc-cancel-edit" class="btn btn-ghost" hidden>Cancelar</button>
     </div>
@@ -446,6 +510,7 @@
     <label class="field">
       <span>Monto <em class="req">*</em></span>
       <input type="number" id="tr-amount" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00">
+      <em class="fx-note" id="tr-amount-note" hidden></em>
     </label>
 
     <label class="field">
@@ -465,6 +530,117 @@
       <span class="spacer"></span>
       <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
       <button type="submit" class="btn btn-primary">Guardar</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ============ MODAL: PRÉSTAMO / DEUDA (1.7.0.0) ============ -->
+<dialog id="modal-debt" class="modal">
+  <form id="form-debt" novalidate>
+    <header class="modal-head">
+      <h3 id="debt-title">Nuevo préstamo o deuda</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+
+    <div class="seg" role="group" aria-label="Dirección">
+      <button type="button" id="debt-dir-me" class="seg-btn seg-income">Presté dinero · me deben</button>
+      <button type="button" id="debt-dir-owe" class="seg-btn seg-expense">Pedí prestado · debo</button>
+    </div>
+
+    <label class="field">
+      <span>Persona <em class="req">*</em></span>
+      <input type="text" id="debt-person" maxlength="40" placeholder="Ej. Ana, Juan, mamá">
+    </label>
+
+    <label class="field">
+      <span>Monto total <em class="req">*</em></span>
+      <input type="number" id="debt-amount" min="0.01" step="0.01" placeholder="0.00">
+    </label>
+
+    <label class="field">
+      <span>Fecha <em class="req">*</em></span>
+      <input type="date" id="debt-date">
+    </label>
+
+    <label class="field">
+      <span>Nota (opcional)</span>
+      <input type="text" id="debt-note" maxlength="80" placeholder="Ej. Para el material del taller">
+    </label>
+
+    <label class="field" id="debt-acc-row">
+      <span>Mover dinero real en (opcional)</span>
+      <select id="debt-account"></select>
+      <em class="fx-note">Si eliges cuenta, se registra el movimiento real (salida si me deben; entrada si debo) y los abonos también.</em>
+    </label>
+
+    <footer class="modal-foot">
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ============ MODAL: ABONO A DEUDA ============ -->
+<dialog id="modal-debt-amt" class="modal modal-sm">
+  <form id="form-debt-amt" novalidate>
+    <header class="modal-head">
+      <h3 id="debt-amt-title">Abonar</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+
+    <label class="field">
+      <span>Monto del abono <em class="req">*</em></span>
+      <input type="number" id="debt-amt" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00">
+    </label>
+    <p class="note" id="debt-amt-info"></p>
+
+    <footer class="modal-foot">
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+      <button type="submit" class="btn btn-primary">Abonar</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ============ MODAL: IMPORTAR CSV (1.6.0.0) ============ -->
+<dialog id="modal-csv" class="modal">
+  <form novalidate>
+    <header class="modal-head">
+      <h3>Importar movimientos desde CSV</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+
+    <label class="field">
+      <span>Archivo CSV <em class="req">*</em></span>
+      <input type="file" id="csv-file" accept=".csv,text/csv">
+    </label>
+
+    <p class="note">Primera fila con encabezados. Se reconocen automáticamente: <b>fecha</b>, <b>monto</b>, <b>descripcion</b>, <b>tipo</b> (ingreso/gasto; si falta, los negativos son gastos), <b>categoria</b>, <b>cuenta</b>, <b>moneda</b>, <b>tasa</b> y <b>etiquetas</b> (separadas por «;»).</p>
+
+    <div id="csv-step2" hidden>
+      <label class="field">
+        <span>Cuenta destino por defecto (si el archivo no la indica o no coincide)</span>
+        <select id="csv-account"></select>
+      </label>
+
+      <div id="csv-summary" class="csv-summary"></div>
+
+      <div class="lock-row" id="csv-dupes-row" hidden>
+        <span class="lock-status" id="csv-dupes-label"></span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="csv-dupes-toggle">Incluir duplicados</button>
+      </div>
+
+      <div class="csv-preview-scroll">
+        <table class="csv-table" id="csv-preview"></table>
+      </div>
+    </div>
+
+    <footer class="modal-foot">
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+      <button type="button" class="btn btn-primary" id="csv-import-go" disabled>Importar</button>
     </footer>
   </form>
 </dialog>
@@ -546,6 +722,14 @@
       <h4>4 · Registro rápido y automáticos</h4>
       <p>Guarda tus movimientos de siempre (renta, nómina, café) como frecuentes: los de acceso rápido se guardan con un toque, y los automáticos (semanal, quincenal o mensual) se registran solos al abrir la app cuando cumplen el período.</p>
 
+      <h4 id="help-shortcuts">4b · Atajos</h4>
+      <p>Si instalas la app, su icono ofrece accesos directos a <b>Nuevo gasto</b> y <b>Nuevo ingreso</b> (pulsación larga en Android/iPhone). En una computadora también tienes teclas rápidas:</p>
+      <ul class="kbd-list">
+        <li><kbd>+</kbd> o <kbd>N</kbd> — nuevo movimiento</li>
+        <li><kbd>/</kbd> — ir a la búsqueda</li>
+        <li><kbd>Esc</kbd> — cerrar la ventana abierta</li>
+      </ul>
+
       <h4>5 · Metas de ahorro</h4>
       <p>Crea metas con monto objetivo y fecha límite opcional; abona o retira cuando quieras. Son apartados informativos: no alteran tu balance real.</p>
 
@@ -577,7 +761,7 @@
     <div class="about-body">
       <img src="icon.svg" alt="" class="about-logo">
       <h4 class="about-name">Mis Cuentas</h4>
-      <p class="about-ver">Versión 1.0</p>
+      <p class="about-ver">Versión <span id="about-version">—</span></p>
       <p>Libro personal de gastos e ingresos con cuentas múltiples, presupuestos, metas de ahorro, movimientos automáticos, calendario y gráficas.</p>
       <p>Tus datos se guardan <b>100% en tu navegador</b>: no hay servidores, cuentas ni internet de por medio. Funciona también sin conexión una vez abierta.</p>
       <p class="about-tech">Aplicación web estática (HTML, CSS y JavaScript puro, sin dependencias). Exporta un respaldo antes de limpiar los datos del navegador.</p>
@@ -641,6 +825,27 @@
       </select>
     </label>
 
+    <div class="field" id="rates-field" hidden>
+      <span>Tipos de cambio <small>(1 unidad → tu moneda base)</small></span>
+      <div id="rates-list" class="rates-list"></div>
+      <span class="lock-note">Se usan para consolidar saldos y como tasa al registrar movimientos en esas monedas. Cada movimiento guarda su tasa histórica. Si falta la tasa se asume 1.0.</span>
+    </div>
+
+    <div class="field">
+      <span>Color de acento</span>
+      <div class="accent-row" id="accent-row"></div>
+      <span class="lock-note">Se aplica a los botones principales, enlaces y elementos activos, en ambos temas.</span>
+    </div>
+
+    <div class="field">
+      <span>Portada</span>
+      <div class="lock-row">
+        <span id="layout-row-label" class="lock-status">Personaliza el orden y qué paneles se muestran</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="btn-layout">Personalizar…</button>
+      </div>
+    </div>
+
     <label class="field">
       <span>Presupuesto de gasto mensual (0 = sin límite)</span>
       <input type="number" id="set-budget" min="0" step="0.01" placeholder="Ej. 8000">
@@ -655,9 +860,63 @@
         <button type="button" class="btn btn-danger" id="btn-lock-off" hidden>Desactivar</button>
       </div>
       <span class="lock-note">La app pedirá el PIN al abrirla y al volver a ella. El PIN nunca se guarda en texto plano (solo su huella SHA-256).</span>
+      <div class="lock-row lock-row-gap" id="bio-row" hidden>
+        <span id="bio-status" class="lock-status">Huella / rostro: desactivado</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="btn-bio">Activar</button>
+      </div>
+      <span class="lock-note" id="bio-note" hidden>Usa el método biométrico de este dispositivo (WebAuthn) como alternativa al PIN. El PIN sigue disponible siempre como respaldo.</span>
       <div class="lock-row lock-row-gap">
         <span class="spacer"></span>
         <button type="button" class="btn btn-ghost" id="btn-hidden-details" aria-label="Detalles">Detalles</button>
+      </div>
+    </div>
+
+    <div class="field" id="bkup-field" hidden>
+      <span>Respaldo automático a archivo</span>
+      <div class="lock-row">
+        <span id="bkup-label" class="lock-status">Sin carpeta elegida</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="bkup-choose">Elegir carpeta…</button>
+      </div>
+      <div class="lock-row lock-row-gap" id="bkup-actions" hidden>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="bkup-now">Respaldar ahora</button>
+        <button type="button" class="btn btn-danger" id="bkup-forget">Olvidar carpeta</button>
+      </div>
+      <span class="lock-note">Cada vez que la app pasa a segundo plano guarda un <i>mis-cuentas-AAAA-MM-DD.json</i> en la carpeta que elijas (se conservan los 7 más recientes, del mismo día solo uno). Todo queda en tu dispositivo: sin nube ni servidores. Disponible en navegadores con File System Access (Chrome/Edge).</span>
+    </div>
+
+    <div class="field">
+      <span>Notificaciones (locales, sin internet)</span>
+      <div class="lock-row">
+        <span id="notif-daily-label" class="lock-status">Recordatorio diario: desactivado</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="notif-daily-toggle">Activar</button>
+      </div>
+      <div class="lock-row lock-row-gap" id="notif-time-row" hidden>
+        <span class="lock-status">Hora del recordatorio</span>
+        <input type="time" id="notif-time" value="21:00" aria-label="Hora del recordatorio diario">
+      </div>
+      <div class="lock-row lock-row-gap">
+        <span id="notif-budget-label" class="lock-status">Alertas de presupuesto: activadas</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="notif-budget-toggle">Desactivar</button>
+      </div>
+      <div class="lock-row lock-row-gap">
+        <span id="notif-rec-label" class="lock-status">Aviso de movimientos automáticos: activado</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="notif-rec-toggle">Desactivar</button>
+      </div>
+      <div class="lock-row lock-row-gap">
+        <span id="weekly-label" class="lock-status">Repaso semanal de los lunes: activado</span>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" id="weekly-toggle">Desactivar</button>
+      </div>
+      <span class="lock-note" id="notif-note"></span>
+      <div class="lock-row lock-row-gap">
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="notif-test">Probar notificación</button>
       </div>
     </div>
 
@@ -681,6 +940,71 @@
 </dialog>
 
 <!-- ============ MODAL: PIN ============ -->
+<!-- ============ MODAL: REPASO SEMANAL (1.11.0.0) ============ -->
+<dialog id="modal-week" class="modal modal-sm">
+  <form novalidate>
+    <header class="modal-head">
+      <h3>Tu semana, en corto</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+    <div id="week-body" class="week-body"></div>
+    <footer class="modal-foot">
+      <button type="button" class="btn btn-ghost" id="week-off-btn">No mostrar más los lunes</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-primary" data-close>Entendido</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ============ MODAL: PERSONALIZAR PORTADA (1.14.0.0) ============ -->
+<dialog id="modal-layout" class="modal modal-sm">
+  <form novalidate>
+    <header class="modal-head">
+      <h3>Personalizar portada</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+
+    <p class="note">Elige qué paneles se muestran y en qué orden. Ocultar un panel no borra nada: solo deja de mostrarse aquí (tu dinero, metas y préstamos siguen calculándose).</p>
+
+    <ul id="layout-list" class="cat-list layout-list"></ul>
+
+    <footer class="modal-foot">
+      <button type="button" class="btn btn-ghost" id="layout-reset">Restablecer</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-primary" data-close>Listo</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ============ MODAL: FILTROS GUARDADOS (1.13.0.0) ============ -->
+<dialog id="modal-fsave" class="modal modal-sm">
+  <form id="form-fsave" novalidate>
+    <header class="modal-head">
+      <h3>Filtros guardados</h3>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">✕</button>
+    </header>
+
+    <div id="fsave-new">
+      <p class="note" id="fsave-summary"></p>
+      <label class="field">
+        <span>Nombre para estos filtros <em class="req" title="Obligatorio">*</em></span>
+        <input type="text" id="fsave-name" maxlength="30" placeholder="Ej. Cafés de este mes">
+      </label>
+      <div class="modal-foot" id="fsave-save-row">
+        <span class="spacer"></span>
+        <button type="submit" class="btn btn-primary">Guardar filtros</button>
+      </div>
+    </div>
+
+    <ul id="fsave-list" class="cat-list fsave-list"></ul>
+
+    <footer class="modal-foot">
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-ghost" data-close>Cerrar</button>
+    </footer>
+  </form>
+</dialog>
+
 <dialog id="modal-pin" class="modal">
   <form id="form-pin" novalidate>
     <header class="modal-head">
@@ -723,6 +1047,10 @@
       <input type="password" id="lock-pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="••••" aria-label="PIN">
       <button type="submit" class="btn btn-primary lock-go">Desbloquear</button>
     </form>
+    <button type="button" class="btn btn-ghost lock-bio" id="lock-bio" hidden>
+      <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11a3.5 3.5 0 0 1 3.5 3.5c0 3-1 5.5-1 5.5M8.5 14c.1 2.6-.6 5-1.4 6.5M12 7.5c2.8 0 5 2.2 5 5M7 12.5c0-.4 0-.8.1-1.1M9.8 8.2A5 5 0 0 1 12 7.5M17.5 15.5c-.3 1.9-.8 3.5-1.3 4.8M6 15.5c-.2 1.3-.6 2.6-1 3.8M12 4.5a8 8 0 0 1 6.6 3.5M5.4 8A8 8 0 0 1 12 4.5"/></svg>
+      Entrar con huella o rostro
+    </button>
     <div class="keypad" id="lock-keypad" aria-hidden="true"></div>
     <p class="lock-error" id="lock-error" hidden>PIN incorrecto, inténtalo de nuevo</p>
   </div>

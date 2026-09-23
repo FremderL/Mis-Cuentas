@@ -3,7 +3,7 @@
      más reciente; sin conexión, la última copia en caché.
    - Resto de recursos (CSS/JS/iconos/manifest): caché primero con
      actualización en segundo plano (stale-while-revalidate). */
-const CACHE = 'mis-cuentas-v13';
+const CACHE = 'mis-cuentas-v26';
 const ASSETS = [
   './',
   './index.html',

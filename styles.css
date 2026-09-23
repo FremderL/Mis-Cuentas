@@ -142,6 +142,25 @@ input,select{font:inherit;color:var(--text)}
 .bars-legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:.74rem;color:var(--muted)}
 .bars-legend .dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
 .dot-in{background:var(--in)} .dot-out{background:var(--out)}
+.dot-null{background:var(--border)}
+
+/* ===== Resumen anual (1.3.0.0) ===== */
+.year-nav{display:inline-flex;align-items:center;gap:5px;margin-left:6px}
+.year-title{min-width:50px;text-align:center;font-size:.95rem;color:var(--text)}
+.year-strip{overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+.year-strip .bars{min-width:520px}
+.year-strip .bar{width:12px}
+.bar-col.current span{color:var(--text);font-weight:700}
+.bar-null{background:var(--border)}
+.year-compare{font-size:.8rem;color:var(--muted);margin:0 0 8px;line-height:1.6}
+.cmp-up{color:var(--in);font-weight:700}
+.cmp-down{color:var(--out);font-weight:700}
+.cmp-good{color:var(--in);font-weight:700}
+.year-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.year-chip{flex:1;min-width:120px;border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.year-chip .yc-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.year-chip .yc-value{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
+.year-chip .yc-sub{font-size:.72rem;color:var(--muted)}
 
 /* ===== Cuentas (strip) ===== */
 .acc-row{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
@@ -381,6 +400,59 @@ input,select{font:inherit;color:var(--text)}
 /* ===== Seguridad (config) ===== */
 .lock-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .lock-row-gap{margin-top:9px}
+#notif-time{width:auto;max-width:110px}
+
+/* --- Multi-moneda (1.5.0.0) --- */
+.rates-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.rate-row{display:flex;align-items:center;gap:10px;font-size:.83rem}
+.rate-row .rc-code{font-weight:700;min-width:44px}
+.rate-row .rc-eq{color:var(--muted);font-size:.78rem;flex:1}
+.rate-row input{max-width:110px;text-align:right}
+.fx-note{display:block;font-style:normal;font-size:.72rem;color:var(--muted);margin-top:4px}
+.tx-cur{display:block;font-size:.66rem;color:var(--muted);font-weight:400}
+.acc-base{display:block;font-size:.66rem;color:var(--muted);font-weight:400}
+
+/* --- Etiquetas (1.6.0.0) --- */
+.tx-tags{display:inline-flex;gap:4px;margin-top:3px;flex-wrap:wrap}
+.tx-tag{font-size:.62rem;color:var(--muted);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-weight:600}
+.tag-summary{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);border-radius:9px;padding:5px 9px;font-size:.75rem;cursor:pointer;font-family:inherit;color:var(--text)}
+.tag-chip.on{border-color:var(--in);font-weight:700}
+.tc-amt{font-variant-numeric:tabular-nums;font-weight:700;font-size:.72rem}
+.tc-amt.pos{color:var(--in)}
+.tc-amt.neg{color:var(--out)}
+
+/* --- Importar CSV (1.6.0.0) --- */
+.csv-summary{font-size:.78rem;color:var(--muted);margin:4px 0 8px;line-height:1.5;border:1px dashed var(--border);border-radius:10px;padding:8px 10px}
+.csv-preview-scroll{max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.csv-table{border-collapse:collapse;width:100%;font-size:.72rem}
+.csv-table th,.csv-table td{border-bottom:1px solid var(--border);padding:5px 6px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.csv-table th{position:sticky;top:0;background:var(--surface);font-weight:700}
+.csv-dup-cell{color:var(--warn);font-weight:700}
+
+/* --- Préstamos y deudas (1.7.0.0) --- */
+.debts-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.debt-chip{display:inline-flex;align-items:baseline;gap:7px;border:1px solid var(--border);border-radius:10px;padding:6px 10px;font-size:.8rem}
+.debt-chip .dc-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.debt-chip b{font-variant-numeric:tabular-nums}
+#debts-me{color:var(--in)}
+#debts-owe{color:var(--out)}
+.debts-list{display:flex;flex-direction:column;gap:9px}
+.debt-row{border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.debt-row.settled{opacity:.72}
+.debt-top{display:flex;align-items:center;gap:8px;min-width:0}
+.debt-person{font-weight:700;font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.debt-dir{font-size:.6rem;padding:2px 7px;border-radius:6px;font-weight:700;flex:none}
+.debt-dir.me{color:var(--in);background:rgba(14,122,95,.13)}
+.debt-dir.owe{color:var(--out);background:rgba(178,54,43,.12)}
+.debt-amt{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;font-size:.83rem;flex:none}
+.debt-meta{font-size:.72rem;color:var(--muted)}
+.debt-progress{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.debt-progress i{display:block;height:100%;background:var(--in);border-radius:99px}
+.debt-actions{display:flex;gap:12px;flex-wrap:wrap}
+#debts-settled-toggle{margin-top:6px}
+#debts-settled{margin-top:9px}
+.debt-paid-note{color:var(--in);font-weight:600}
 .lock-status{font-size:.85rem;font-weight:600;color:var(--muted)}
 .lock-status.on{color:var(--in)}
 .lock-note{font-size:.72rem;color:var(--muted);line-height:1.5;font-weight:400}
@@ -509,6 +581,15 @@ input,select{font:inherit;color:var(--text)}
 .cb-status{font-size:.72rem;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
 .cb-status.warn{color:var(--warn);font-weight:600}
 .cb-status.over{color:var(--out);font-weight:700}
+.cb-roll{font-size:.7rem;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.cb-actions{display:flex;gap:14px;margin-top:4px}
+.cb-btn-roll.on{font-weight:700}
+.cb-hist{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
+.cb-hcell{border:1px solid var(--border);border-top:3px solid var(--in);border-radius:7px;padding:5px 4px;text-align:center;min-width:0}
+.cb-hcell.warn{border-top-color:var(--warn)}
+.cb-hcell.over{border-top-color:var(--out)}
+.cb-hm{display:block;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.cb-hcell b{font-size:.78rem;font-variant-numeric:tabular-nums}
 
 /* ===== Plantillas (movimientos frecuentes) ===== */
 .tpl-grid{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-top:4px}
@@ -594,3 +675,97 @@ input,select{font:inherit;color:var(--text)}
   .acc-card{min-width:132px}
   .cal-cell{min-height:44px}
 }
+
+/* ===== 1.8.0.0 — Biometría y personalización ===== */
+/* Selector de color de acento */
+.accent-row{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin-top:.15rem}
+.swatch{
+  width:26px;height:26px;border-radius:50%;padding:0;cursor:pointer;
+  border:2px solid var(--bg);box-shadow:0 0 0 1.5px var(--border);
+  transition:transform .12s ease, box-shadow .12s ease;flex:none;
+}
+.swatch:hover{transform:scale(1.12)}
+.swatch.active{box-shadow:0 0 0 1.5px var(--border),0 0 0 3.5px var(--primary)}
+.accent-default{font-size:.78rem;color:var(--muted)}
+.accent-default:hover{color:var(--primary)}
+.accent-default.active{color:var(--primary);font-weight:600}
+
+/* Botón biométrico en la pantalla de bloqueo */
+.lock-bio{display:flex;align-items:center;gap:.5rem;margin:.6rem auto 0;font-size:.88rem}
+.lock-bio .ic{width:20px;height:20px}
+
+/* Reordenar cuentas: arrastrar y soltar */
+.acc-card[draggable="true"]{cursor:grab}
+.acc-card.dragging{opacity:.45;cursor:grabbing}
+.acc-card.drop-before{box-shadow:inset 3px 0 0 var(--primary)}
+.acc-card.drop-after{box-shadow:inset -3px 0 0 var(--primary)}
+
+/* Botones ‹ › de reorden en el gestor (táctil) */
+.cat-list .mv{
+  background:none;border:1px solid var(--border);border-radius:6px;cursor:pointer;
+  color:var(--muted);font-size:.9rem;line-height:1;padding:.2rem .45rem;flex:none;
+}
+.cat-list .mv:hover{color:var(--primary);border-color:var(--primary)}
+.cat-list .mv:disabled{opacity:.35;cursor:default}
+
+/* ===== 1.10.0.0 — Atajos y productividad ===== */
+/* Registro rápido como widget destacado (subió a la parte superior) */
+.quick{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:.85rem 1rem .95rem;
+  border-top:3px solid var(--primary);
+}
+.quick h2{font-size:1rem;margin:0}
+.quick .btn-sm{margin-left:auto}
+
+/* Mitos de teclado en Ayuda */
+.kbd-list{list-style:none;margin:.3rem 0 0;padding:0;display:grid;gap:.35rem}
+.kbd-list li{display:flex;align-items:center;gap:.5rem;font-size:.88rem;color:var(--muted)}
+kbd{
+  display:inline-block;min-width:1.7em;text-align:center;
+  border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;
+  background:var(--surface-2);color:var(--text);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.8em;padding:.1em .4em;
+}
+
+/* ===== 1.11.0.0 — Resumen semanal ===== */
+.week-body{display:grid;gap:.7rem;margin-top:.15rem}
+.week-nums{display:flex;gap:1.4rem;flex-wrap:wrap}
+.week-nums b{display:block;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.week-nums span{font-size:.78rem;color:var(--muted)}
+.week-nums .neg{color:var(--out)}
+.week-nums .pos{color:var(--in)}
+.week-cmp{font-size:.82rem;color:var(--muted)}
+.week-cmp.up{color:var(--out)}
+.week-cmp.down{color:var(--in)}
+.week-list{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+.week-list li{display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center;font-size:.88rem}
+.week-list .wb{grid-column:1/-1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.week-list .wb i{display:block;height:100%;background:var(--out);border-radius:3px}
+.week-note{font-size:.82rem;color:var(--muted)}
+.panel-week #week-review{margin-top:.2rem}
+.week-empty{font-size:.88rem;color:var(--muted);margin:0}
+
+/* ===== 1.12.0.0 — Respaldo automático ===== */
+#bkup-label.fresh{color:var(--in)}
+#bkup-label.stale{color:var(--warn)}
+/* [hidden] puede perder contra display:flex de .lock-row */
+.lock-row[hidden], [hidden].lock-row{display:none !important}
+
+/* ===== 1.13.0.0 — Búsquedas guardadas ===== */
+.fsave-list{margin:.6rem 0 0}
+.fsave-list li{display:flex;align-items:center;gap:.5rem;padding:.45rem 0;border-bottom:1px solid var(--border)}
+.fsave-list li:last-child{border-bottom:none}
+.fsave-name{flex:none;max-width:40%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fsave-desc{font-size:.78rem;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fsave-empty{justify-content:center;color:var(--muted)}
+
+/* ===== 1.14.0.0 — Personalizar portada ===== */
+.layout-list li{display:flex;align-items:center;gap:.45rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.layout-list li:last-child{border-bottom:none}
+.layout-list .lname{font-size:.92rem;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.layout-list .lname.off{color:var(--muted);text-decoration:line-through}
+.layout-list .ltog{flex:none;margin-left:auto;font-size:.78rem}
+.layout-list .ltog.on{color:var(--in)}
+.layout-list .ltog:not(.on){color:var(--muted)}
+[data-panel].panel-hidden{display:none !important}
