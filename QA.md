@@ -3,7 +3,14 @@
 **Fecha:** 2026-09-20 · **Alcance:** todas las funciones de las Partes 1–9 + Dinero Oculto.
 **Entorno de pruebas:** vista previa local (`server.py`, puerto 8000), Chrome/Firefox y móvil (responsive).
 
+### Responsivo móvil (1.14.0.2)
+- [ ] En pantalla de ~375px no existe scroll horizontal en la portada; todos los paneles caben en el ancho.
+- [ ] La tira de barras del resumen anual se ajusta (etiquetas compactas) sin forzar el ancho de la página.
+- [ ] El botón ＋ se puede tocar; los modales usan pantalla completa sin desbordar.
+- [ ] Descripciones largas del libro se truncan con puntos suspensivos en vez de sobresalir.
+
 ### Personalizar portada (1.14.0.0)
+- [ ] (1.14.0.1) Tras publicar una actualización, la primera apertura usa HTML y JS compatibles entre sí (los botones nuevos responden) y la app se recarga sola al instalar la nueva versión.
 - [ ] Configuración → Portada → Personalizar… lista los 9 paneles; «Ocultar/Mostrar» funciona al instante.
 - [ ] ‹ › reordenan y el cambio se ve en la portada; el registro rápido va fijo arriba (solo mostrar/ocultar).
 - [ ] El orden y los ocultos persisten al recargar y en el respaldo JSON; «Restablecer» vuelve al diseño original.

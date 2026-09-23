@@ -1,7 +1,7 @@
 # 💰 Mis Cuentas — Libro de gastos e ingresos
 
 
-**Versión actual:** 1.14.0.0 · Historial completo en `CHANGELOG.md` · Futuras versiones en `ROADMAP.md`
+**Versión actual:** 1.14.0.2 · Historial completo en `CHANGELOG.md` · Futuras versiones en `ROADMAP.md`
 
 Aplicación web **100% estática** (HTML + CSS + JavaScript, sin dependencias ni build) para administrar tus finanzas personales como un libro de cuentas de banco. Funciona en **móvil y computadora**, guarda todo localmente en tu navegador y permite exportar respaldos para migrar de dispositivo.
 

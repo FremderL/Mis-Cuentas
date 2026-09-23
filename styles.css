@@ -769,3 +769,23 @@ kbd{
 .layout-list .ltog.on{color:var(--in)}
 .layout-list .ltog:not(.on){color:var(--muted)}
 [data-panel].panel-hidden{display:none !important}
+
+/* ===== 1.14.0.2 — Fix responsivo móvil ===== */
+/* Los elementos de la cuadrícula no deben imponer su min-content a la página:
+   sin esto, un contenido ancho (p. ej. la tira anual de 520px) estiraba TODOS
+   los paneles y generaba scroll horizontal en toda la portada. */
+.panels > *{min-width:0}
+
+@media (max-width:520px){
+  /* Tira anual: quepa en móvil (antes forzaba 520px de ancho mínimo) */
+  .year-strip .bars{min-width:0;gap:6px}
+  .year-strip .bar{width:7px}
+  .year-strip .bar-col span{font-size:.55rem;letter-spacing:0}
+  .year-strip{overflow-x:auto}
+  /* Comparativa 6 meses: algo de aire menos, mismo trato */
+  .panel .bars{gap:8px}
+  /* El cuerpo nunca debe scrollear horizontalmente */
+  html,body{max-width:100%;overflow-x:hidden}
+}
+/* tx-desc inline no se recorta con ellipsis → block lo recorta a su celda */
+.tx-desc,.tx-cat{display:block}
